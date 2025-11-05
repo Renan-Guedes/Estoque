@@ -4,18 +4,52 @@ from django.contrib.auth.models import User
 from .models import Categoria, Produto, LimiteProduto, MovimentoEstoque
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Seu e-mail'
+        })
+    )
 
     class Meta:
         model = User
-        fields = ("nome", "email", "senha", "confirmacao_senha")
+        fields = ("username", "email", "password1", "password2")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Labels em PT-BR
+        self.fields['username'].label = 'Usuário'
+        self.fields['email'].label = 'E-mail'
+        self.fields['password1'].label = 'Senha'
+        self.fields['password2'].label = 'Confirmar senha'
+
+        # Placeholders e classes Bootstrap
+        self.fields['username'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Seu usuário'
+        })
+        self.fields['password1'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Crie sua senha'
+        })
+        self.fields['password2'].widget.attrs.update({
+            'class': 'form-control',
+            'placeholder': 'Confirme sua senha'
+        })
+
+        # Texto de ajuda mais enxuto
+        if self.fields['password1'].help_text:
+            self.fields['password1'].help_text = 'Sua senha deve ser segura e difícil de adivinhar.'
+        if self.fields['password2'].help_text:
+            self.fields['password2'].help_text = 'Digite a mesma senha para confirmação.'
 
 class CategoriaForm(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da Categoria'})
     )
     
-    ativo = forms.BooleanField(attrs={'class': 'form-check-input'}, required=False)
+    ativo = forms.CheckboxInput(attrs={'class': 'form-check-input'})
     
     class Meta:
         model = Categoria
@@ -46,7 +80,7 @@ class ProdutoForm(forms.ModelForm):
         widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Quantidade Atual'})
     )
     
-    ativo = forms.BooleanField(attrs={'class': 'form-check-input'}, required=False)
+    ativo = forms.CheckboxInput(attrs={'class': 'form-check-input'})
     
     class Meta:
         model = Produto

@@ -31,7 +31,7 @@ class Produto(models.Model):
     quantidade_atual = models.IntegerField(default=0)
     ativo = models.BooleanField(default=True)
     criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
     deletado_em = models.DateTimeField(null=True, blank=True)
     
     def delete(self, *args, **kwargs):
@@ -58,7 +58,7 @@ class LimiteProduto(models.Model):
     limite_ideal = models.IntegerField(default=0)
     tipo_limite = models.CharField(max_length=20, choices=TIPOS_LIMITE, default='valor')
     criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto=True)
+    atualizado_em = models.DateTimeField(auto_now=True)
 
     def get_status(self, quantidade):
         if self.tipo_limite == 'porcentagem':
