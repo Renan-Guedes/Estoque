@@ -18,13 +18,13 @@ class RegistrationForm(UserCreationForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Labels em PT-BR
+        # Labels
         self.fields['username'].label = 'Usuário'
         self.fields['email'].label = 'E-mail'
         self.fields['password1'].label = 'Senha'
         self.fields['password2'].label = 'Confirmar senha'
 
-        # Placeholders e classes Bootstrap
+        # Classes
         self.fields['username'].widget.attrs.update({
             'class': 'form-control',
             'placeholder': 'Seu usuário'
@@ -38,7 +38,7 @@ class RegistrationForm(UserCreationForm):
             'placeholder': 'Confirme sua senha'
         })
 
-        # Texto de ajuda mais enxuto
+        # Help texts
         if self.fields['password1'].help_text:
             self.fields['password1'].help_text = 'Sua senha deve ser segura e difícil de adivinhar.'
         if self.fields['password2'].help_text:
@@ -76,15 +76,12 @@ class ProdutoForm(forms.ModelForm):
         required=False
     )
     
-    quantidade_atual = forms.IntegerField(
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Quantidade Atual'})
-    )
-    
     ativo = forms.CheckboxInput(attrs={'class': 'form-check-input'})
     
     class Meta:
         model = Produto
-        fields = ['nome', 'sku', 'descricao', 'categoria', 'quantidade_atual', 'ativo']
+        # quantidade_atual removido: será sempre 0 no cadastro
+        fields = ['nome', 'sku', 'descricao', 'categoria', 'ativo']
 
 class LimiteProdutoForm(forms.ModelForm):
     limite_minimo = forms.IntegerField(

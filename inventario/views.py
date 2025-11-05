@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Categoria, Produto, LimiteProduto, MovimentoEstoque
-from .forms import CategoriaForm, ProdutoForm, LimiteProdutoForm, MovimentoEstoqueForm, RegistrationForm
+from django.shortcuts import render, redirect
+from .models import Produto, LimiteProduto
+from .forms import ProdutoForm, RegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login, logout
+from django.contrib.auth import logout
 from django.core.paginator import Paginator
 
 def registrar(request):
@@ -46,3 +46,19 @@ def home(request):
     contexto = {'produtos': produtos, 'itens_por_pagina': itens_por_pagina}
     
     return render(request, 'inventario/home.html', contexto)
+
+@login_required
+def criar_produto(request):
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST)
+        if form.is_valid():
+            produto = form.save(commit=False)
+            produto.quantidade_atual = 0
+            produto.save()
+            messages.success(request, 'Produto criado com sucesso.')
+            return redirect('inventario:home')
+        else:
+            messages.error(request, f'Por favor, corrija os erros abaixo: {form.errors}')
+    else:
+        form = ProdutoForm()
+    return render(request, 'inventario/criar_produto.html', {'form': form})

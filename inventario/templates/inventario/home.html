@@ -6,7 +6,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Produtos em Estoque</h2>
     <div>
-        <a href="#" class="btn btn-primary">Novo Produto</a>
+        <a href="{% url 'inventario:criar_produto' %}" class="btn btn-primary">Novo Produto</a>
         <a href="#" class="btn btn-success">Nova Movimentação</a>
     </div>
 </div>
@@ -14,14 +14,14 @@
 <div class="mb-3">
     <form method="get" class="row align-items-center">
         <div class="col-auto">
-            <label for="items_per_page" class="form-label">Itens por página:</label>
+            <label for="itens_por_pagina" class="form-label">Itens por página:</label>
         </div>
         <div class="col-auto">
-            <select name="items_per_page" id="items_per_page" class="form-select" onchange="this.form.submit()">
-                <option value="10" {% if items_per_page == '10' %}selected{% endif %}>10</option>
-                <option value="25" {% if items_per_page == '25' %}selected{% endif %}>25</option>
-                <option value="50" {% if items_per_page == '50' %}selected{% endif %}>50</option>
-                <option value="100" {% if items_per_page == '100' %}selected{% endif %}>100</option>
+            <select name="itens_por_pagina" id="itens_por_pagina" class="form-select" onchange="this.form.submit()">
+                <option value="10" {% if itens_por_pagina == '10' %}selected{% endif %}>10</option>
+                <option value="25" {% if itens_por_pagina == '25' %}selected{% endif %}>25</option>
+                <option value="50" {% if itens_por_pagina == '50' %}selected{% endif %}>50</option>
+                <option value="100" {% if itens_por_pagina == '100' %}selected{% endif %}>100</option>
             </select>
         </div>
     </form>
@@ -42,10 +42,10 @@
         <tbody>
             {% for produto in produtos %}
             <tr>
-                <td>{{ produto.name }}</td>
+                <td>{{ produto.nome }}</td>
                 <td>{{ produto.sku|default:"-" }}</td>
-                <td>{{ produto.category|default:"-" }}</td>
-                <td>{{ produto.current_quantity }}</td>
+                <td>{{ produto.categoria|default:"-" }}</td>
+                <td>{{ produto.quantidade_atual }}</td>
                 <td>
                     {% if produto.status == 'ideal' %}
                         <span class="badge bg-success">Ideal</span>

@@ -9,4 +9,7 @@ urlpatterns = [
     path('registrar/', views.registrar, name='registrar'),
     path('login/', auth_views.LoginView.as_view(template_name='inventario/login.html'), name='login'),
     path('logout/', views.logout_view, name='logout'),
+    
+    # Produto URLs
+    path('produto/criar/', views.criar_produto, name='criar_produto'),
 ]
