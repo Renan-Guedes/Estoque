@@ -12,6 +12,8 @@
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
+                    {% url 'inventario:home' as home_url %}
+                    <input type="hidden" name="next" value="{{ next_url|default:home_url }}">
                     
                     <div class="mb-3">
                         <label for="{{ form.nome.id_for_label }}" class="form-label">Nome</label>
@@ -69,7 +71,9 @@
 
                     <div class="d-flex justify-content-between">
                         <button type="submit" class="btn btn-primary">Salvar</button>
-                        <a href="{% url 'inventario:home' %}" class="btn btn-secondary">Cancelar</a>
+                        {% with back_url=next_url|default:home_url %}
+                        <a href="{{ back_url }}" class="btn btn-secondary">Cancelar</a>
+                        {% endwith %}
                     </div>
                 </form>
             </div>

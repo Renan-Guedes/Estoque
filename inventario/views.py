@@ -1,10 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from .models import Categoria, Produto, LimiteProduto
 from .forms import CategoriaForm, LimiteProdutoForm, MovimentoEstoqueForm, ProdutoForm, RegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.core.paginator import Paginator
+from django.urls import reverse
 
 def registrar(request):
     if request.method == 'POST':
@@ -61,6 +63,8 @@ def listar_produtos(request):
 
 @login_required
 def criar_produto(request):
+    # Captura de URL de retorno
+    next_url = request.GET.get('next') or request.POST.get('next') or None
     if request.method == 'POST':
         form = ProdutoForm(request.POST)
         if form.is_valid():
@@ -68,25 +72,34 @@ def criar_produto(request):
             produto.quantidade_atual = 0
             produto.save()
             messages.success(request, 'Produto criado com sucesso.')
+            
+            # Redireciona para a origem segura (home ou lista de produtos)
+            allowed = {reverse('inventario:home'), reverse('inventario:listar_produtos')}
+            if next_url in allowed:
+                return redirect(next_url)
             return redirect('inventario:home')
         else:
             messages.error(request, f'Por favor, corrija os erros abaixo: {form.errors}')
     else:
         form = ProdutoForm()
-    return render(request, 'inventario/produto_form.html', {'form': form})
+    return render(request, 'inventario/produto_form.html', {'form': form, 'next_url': next_url})
 
 @login_required
 def editar_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)
+    next_url = request.GET.get('next') or request.POST.get('next') or None
     if request.method == 'POST':
         form = ProdutoForm(request.POST, instance=produto)
         if form.is_valid():
             form.save()
             messages.success(request, 'Produto atualizado com sucesso.')
+            allowed = {reverse('inventario:home'), reverse('inventario:listar_produtos')}
+            if next_url in allowed:
+                return redirect(next_url)
             return redirect('inventario:home')
     else:
         form = ProdutoForm(instance=produto)
-    return render(request, 'inventario/produto_form.html', {'form': form})
+    return render(request, 'inventario/produto_form.html', {'form': form, 'next_url': next_url})
 
 @login_required
 def deletar_produto(request, pk):
@@ -103,6 +116,7 @@ def limite_produto(request, pk):
     except LimiteProduto.DoesNotExist:
         limite = None
 
+    next_url = request.GET.get('next') or request.POST.get('next') or None
     if request.method == 'POST':
         form = LimiteProdutoForm(request.POST, instance=limite)
         if form.is_valid():
@@ -110,13 +124,17 @@ def limite_produto(request, pk):
             limite.produto = produto
             limite.save()
             messages.success(request, 'Limites do produto atualizados com sucesso.')
+            allowed = {reverse('inventario:home'), reverse('inventario:listar_produtos')}
+            if next_url in allowed:
+                return redirect(next_url)
             return redirect('inventario:home')
     else:
         form = LimiteProdutoForm(instance=limite)
 
     return render(request, 'inventario/produto_limite.html', {
         'form': form,
-        'produto': produto
+        'produto': produto,
+        'next_url': next_url,
     })
     
 @login_required

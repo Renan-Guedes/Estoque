@@ -5,7 +5,7 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Lista de Produtos</h2>
-    <a href="{% url 'inventario:criar_produto' %}" class="btn btn-primary">Novo Produto</a>
+    <a href="{% url 'inventario:criar_produto' %}?next={% url 'inventario:listar_produtos' %}" class="btn btn-primary">Novo Produto</a>
 </div>
 
 <div class="table-responsive">
@@ -40,8 +40,8 @@
                 </td>
                 <td>
                     <div class="btn-group">
-                        <a href="{% url 'inventario:editar_produto' produto.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
-                        <a href="{% url 'inventario:limite_produto' produto.pk %}" class="btn btn-sm btn-outline-info">Limites</a>
+                        <a href="{% url 'inventario:editar_produto' produto.pk %}?next={% url 'inventario:listar_produtos' %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                        <a href="{% url 'inventario:limite_produto' produto.pk %}?next={% url 'inventario:listar_produtos' %}" class="btn btn-sm btn-outline-info">Limites</a>
                         <a href="{% url 'inventario:deletar_produto' produto.pk %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tem certeza que deseja excluir este produto?')">Excluir</a>
                     </div>
                 </td>
