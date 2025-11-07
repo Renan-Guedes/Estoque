@@ -29,20 +29,16 @@
             <li class="nav-item">
               <a class="nav-link" href="{% url 'inventario:home' %}">Home</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventario:lista_categorias' %}">Categorias</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'inventario:movimentacao_estoque' %}">Movimentações</a>
+            </li>
           </ul>
             {% comment %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'product_list' %}">Produtos</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'stock_movement' %}"
-                >Movimentações</a
-              >
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'category_list' %}"
-                >Categorias</a
-              >
             </li>
           </ul>
           {% endcomment %} 

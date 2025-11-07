@@ -48,9 +48,7 @@ class CategoriaForm(forms.ModelForm):
     nome = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome da Categoria'})
     )
-    
-    ativo = forms.CheckboxInput(attrs={'class': 'form-check-input'})
-    
+
     class Meta:
         model = Categoria
         fields = ['nome', 'ativo']
@@ -80,7 +78,6 @@ class ProdutoForm(forms.ModelForm):
     
     class Meta:
         model = Produto
-        # quantidade_atual removido: será sempre 0 no cadastro
         fields = ['nome', 'sku', 'descricao', 'categoria', 'ativo']
 
 class LimiteProdutoForm(forms.ModelForm):

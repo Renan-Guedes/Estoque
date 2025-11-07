@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Produto, LimiteProduto
-from .forms import LimiteProdutoForm, MovimentoEstoqueForm, ProdutoForm, RegistrationForm
+from .models import Categoria, Produto, LimiteProduto
+from .forms import CategoriaForm, LimiteProdutoForm, MovimentoEstoqueForm, ProdutoForm, RegistrationForm
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -118,3 +118,44 @@ def movimentacao_estoque(request):
     else:
         form = MovimentoEstoqueForm()
     return render(request, 'inventario/movimentacao_estoque.html', {'form': form})
+
+@login_required
+def lista_categorias(request):
+    categorias = Categoria.objects.filter(deletado_em__isnull=True)
+    return render(request, 'inventario/categoria_lista.html', {'categorias': categorias})
+
+@login_required
+def criar_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            categoria = form.save(commit=False)
+            categoria.usuario = request.user
+            categoria.ativo = True
+            categoria.deletado_em = None
+            categoria.save()
+            messages.success(request, 'Categoria criada com sucesso.')
+            return redirect('inventario:lista_categorias')
+    else:
+        form = CategoriaForm()
+    return render(request, 'inventario/categoria_form.html', {'form': form})
+
+@login_required
+def editar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST, instance=categoria)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Categoria atualizada com sucesso.')
+            return redirect('inventario:lista_categorias')
+    else:
+        form = CategoriaForm(instance=categoria)
+    return render(request, 'inventario/categoria_form.html', {'form': form})
+
+@login_required
+def deletar_categoria(request, pk):
+    categoria = get_object_or_404(Categoria, pk=pk)
+    categoria.delete()
+    messages.success(request, 'Categoria excluída com sucesso.')
+    return redirect('inventario:lista_categorias')
