@@ -2,7 +2,7 @@
 
 Projeto Django com autenticação de usuários, gerenciamento de produtos, categorias, limites de estoque e movimentações (entradas e saídas).
 
-## ✨ Principais Funcionalidades
+## Principais Funcionalidades
 - Cadastro e autenticação de usuários (login, logout, registro)
 - Cadastro, edição, listagem e soft delete de produtos
 - Definição de limites de estoque por produto (quantidade absoluta ou percentual)
@@ -13,7 +13,7 @@ Projeto Django com autenticação de usuários, gerenciamento de produtos, categ
 - Prevenção de estoque negativo
 - Navegação contextual com retorno à tela de origem via parâmetro `next` (com redirecionamento seguro)
 
-## 🏗 Arquitetura e Organização
+## Arquitetura e Organização
 ```
 projeto/
 ├── manage.py
