@@ -78,7 +78,7 @@ python manage.py runserver
 ```
 Acesse: http://127.0.0.1:8000/
 
-## 🌐 Endpoints Principais
+## Endpoints Principais
 | Caminho | Nome | Descrição |
 |--------|------|-----------|
 | `/` | `inventario:home` | Dashboard inicial / visão geral |
@@ -96,14 +96,8 @@ Acesse: http://127.0.0.1:8000/
 | `/categorias/<id>/deletar/` | `inventario:deletar_categoria` | Soft delete da categoria |
 | `/movimentacao_estoque/` | `inventario:movimentacao_estoque` | Registrar entrada/saída |
 
-## 🛡 Segurança e Boas Práticas
-- Redirecionamentos: validar `next` contra destinos permitidos.
-- Soft delete preserva histórico para auditoria.
-- Movimentações imutáveis garantem trilha confiável de estoque.
-- Uso de `login_required` protege operações sensíveis.
-
 ## 📄 Licença
-Declaro que esse sistema pode ser utilizado mediante citação de seu criador Renan Guedes.
+Declaro que esse sistema pode ser utilizado mediante citação de seu criador **[Renan Guedes](https://github.com/Renan-Guedes)**.
 
 ---
 Se tiver dúvidas ou quiser evoluir o projeto, abra uma issue ou faça um fork. Bom desenvolvimento! 👨‍💻
